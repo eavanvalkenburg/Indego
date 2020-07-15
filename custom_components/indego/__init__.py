@@ -183,7 +183,7 @@ ENTITY_DEFINITIONS = {
         CONF_NAME: "last completed",
         CONF_ICON: "mdi:cash-100",
         CONF_DEVICE_CLASS: DEVICE_CLASS_TIMESTAMP,
-        CONF_UNIT_OF_MEASUREMENT: "ISO8601",
+        CONF_UNIT_OF_MEASUREMENT: None,  # "ISO8601",
         CONF_ATTR: [],
     },
     ENTITY_NEXT_MOW: {
@@ -191,7 +191,7 @@ ENTITY_DEFINITIONS = {
         CONF_NAME: "next mow",
         CONF_ICON: "mdi:chevron-right",
         CONF_DEVICE_CLASS: DEVICE_CLASS_TIMESTAMP,
-        CONF_UNIT_OF_MEASUREMENT: "ISO8601",
+        CONF_UNIT_OF_MEASUREMENT: None,  # "ISO8601",
         CONF_ATTR: [],
     },
     ENTITY_MOWING_MODE: {
@@ -527,16 +527,17 @@ class IndegoHub:
     async def _update_last_completed_mow(self):
         await self.indego.update_last_completed_mow()
         if self.indego.last_completed_mow:
-            self.entities[ENTITY_LAST_COMPLETED].state = self.indego.last_completed_mow
+            self.entities[
+                ENTITY_LAST_COMPLETED
+            ].state = self.indego.last_completed_mow.isoformat()
             self.entities[ENTITY_LAWN_MOWED].add_attribute(
-                {"last_completed_mow": self.indego.last_completed_mow}
+                {"last_completed_mow": self.indego.last_completed_mow.isoformat()}
             )
 
     async def _update_next_mow(self):
         await self.indego.update_next_mow()
         if self.indego.next_mow:
-            self.entities[ENTITY_NEXT_MOW].state = self.indego.next_mow
+            self.entities[ENTITY_NEXT_MOW].state = self.indego.next_mow.isoformat()
             self.entities[ENTITY_LAWN_MOWED].add_attribute(
-                {"next_mow": self.indego.next_mow}
+                {"next_mow": self.indego.next_mow.isoformat()}
             )
-
